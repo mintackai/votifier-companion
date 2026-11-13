@@ -2,7 +2,7 @@
 
 A server-side Minecraft mod. Players **collect their vote rewards in game** with `/reward`, and everyone online sees when someone votes.
 
-It needs [votifier-python](https://github.com/mintackai/votifier-python), the program that receives the votes. Set that up first.
+It needs [votifier-python](https://github.com/mintackai/votifier-standalone), the program that receives the votes. Set that up first.
 
 ## Get started
 
@@ -49,7 +49,7 @@ The settings are in `config/votifier_python_companion/votifier.json`:
 
 | Setting | What it does |
 | :--- | :--- |
-| `apiUrl` | Where votifier-python is. Keep this value when it runs on the same machine; otherwise read [this](https://github.com/mintackai/votifier-python/blob/main/docs/security.md#reaching-the-api-from-another-machine-https) first. |
+| `apiUrl` | Where votifier-python is. Keep this value when it runs on the same machine; otherwise read [this](https://github.com/mintackai/votifier-standalone/blob/main/docs/security.md#reaching-the-api-from-another-machine-https) first. |
 | `apiKey` | The key from step 4. Keep it private. |
 | `requestTimeoutSeconds` | How long to wait for votifier-python to answer (`1` to `60`). |
 | `claimCooldownSeconds` | Seconds a player must wait between two `/reward` commands (`0` to `300`; `0` is no waiting). |
