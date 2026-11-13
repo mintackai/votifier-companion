@@ -1,0 +1,76 @@
+# Builds Votifier Python Companion on every push to this Minecraft version's branch and puts the jars on its GitHub release,
+# tagged v<mod version>+<Minecraft version>. While the mod version stays the same, every push replaces the jars of
+# that release and moves its tag to the new commit; raise mod_version in gradle.properties for a new release.
+name: Build and release
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out
+        uses: actions/checkout@v4
+        with:
+          path: mod
+
+      - name: Set up Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Build
+        working-directory: mod
+        run: |
+          chmod +x gradlew
+          ./gradlew build --no-daemon
+
+      - name: Collect the jars
+        working-directory: mod
+        run: |
+          mkdir -p "$GITHUB_WORKSPACE/release"
+          for jar in */build/libs/*.jar; do
+            case "$jar" in
+              common/*|*-raw.jar|*-sources.jar|*-dev.jar|*-dev-shadow.jar|*-transformProduction*) ;;
+              *) cp "$jar" "$GITHUB_WORKSPACE/release/" ;;
+            esac
+          done
+          ls -l "$GITHUB_WORKSPACE/release"
+          test -n "$(ls "$GITHUB_WORKSPACE/release")"
+
+      - name: Publish the release
+        if: github.event_name != 'pull_request'
+        working-directory: mod
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          version=$(grep -E '^mod_version' gradle.properties | cut -d= -f2 | tr -d ' ')
+          minecraft=$(grep -E '^minecraft_version' gradle.properties | cut -d= -f2 | tr -d ' ')
+          case "$version" in *+*) ;; *) version="$version+$minecraft" ;; esac
+          tag="v$version"
+          title="Votifier Python Companion ${version%%+*} for Minecraft $minecraft"
+          git tag -f "$tag" "$GITHUB_SHA"
+          git push -f origin "refs/tags/$tag"
+          notes="Built from ${GITHUB_SHA::7} on branch ${GITHUB_REF_NAME}."
+          if gh release view "$tag" > /dev/null 2>&1; then
+            gh release edit "$tag" --title "$title" --notes "$notes"
+          else
+            gh release create "$tag" --title "$title" --notes "$notes" --verify-tag
+          fi
+          gh release upload "$tag" "$GITHUB_WORKSPACE"/release/*.jar --clobber
