@@ -63,3 +63,7 @@ The same folder has `messages.json` (chat messages, `&` colour codes), `commands
 Each Minecraft version has its own branch: `main` (1.20.1), `1.21.1`, `26.1.2` and `26.3`. Build with `./gradlew build`; every push to a version branch publishes the jars to that version's release.
 
 The mod calls votifier-python's `POST /v1/players/{name}/claim`, `claim-all` and `POST /v1/claims/{number}/confirm`, and listens on `GET /v1/events` for announcements.
+
+## License
+
+GNU Affero General Public License v3.0. See [LICENSE](LICENSE).
