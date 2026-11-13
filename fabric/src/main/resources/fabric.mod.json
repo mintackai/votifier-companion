@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "id": "votifier_python_companion",
+  "version": "${version}",
+  "name": "Votifier Python Companion",
+  "description": "Server-side companion mod for votifier-python that claims vote rewards via HTTP API and executes configured console reward commands.",
+  "authors": [
+    "Mintack"
+  ],
+  "contact": {
+    "sources": "https://github.com/mintackai/votifier-companion"
+  },
+  "license": "All Rights Reserved",
+  "environment": "server",
+  "entrypoints": {
+    "main": [
+      "com.mintack.minecraft.votifier.fabric.VotifierModFabric"
+    ]
+  },
+  "mixins": [
+    "votifier_python_companion.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.19.5",
+    "minecraft": "~1.21.1",
+    "java": ">=21",
+    "architectury": ">=13.0.8",
+    "fabric-api": "*"
+  }
+}

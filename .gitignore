@@ -1,0 +1,18 @@
+# Project exclude paths
+/.gradle/
+/build/
+/common/build/
+/fabric/.gradle/
+/fabric/build/
+/forge/.gradle/
+/forge/build/
+/neoforge/.gradle/
+/neoforge/build/
+/fabric/run/
+/forge/run/
+/neoforge/run/
+/.idea/
+/.claude/
+/.mcp.json
+/common/.gradle/
+/common/logs/

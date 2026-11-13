@@ -1,0 +1,36 @@
+modLoader = "javafml"
+loaderVersion = "[4,)"
+license = "All Rights Reserved"
+
+[[mods]]
+modId = "votifier_python_companion"
+version = "${version}"
+displayName = "Votifier Python Companion"
+authors = "Mintack"
+description = '''
+Server-side companion mod for votifier-python that claims vote rewards via HTTP API and executes configured console reward commands.
+'''
+
+[[dependencies.votifier_python_companion]]
+modId = "neoforge"
+type = "required"
+versionRange = "[21.1,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.votifier_python_companion]]
+modId = "minecraft"
+type = "required"
+versionRange = "[1.21.1,1.21.2)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.votifier_python_companion]]
+modId = "architectury"
+type = "required"
+versionRange = "[13.0.8,)"
+ordering = "AFTER"
+side = "BOTH"
+
+[[mixins]]
+config = "votifier_python_companion.mixins.json"
